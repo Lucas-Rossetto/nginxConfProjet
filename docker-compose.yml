@@ -16,13 +16,16 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres:9.6
+    image: postgres:9.6-alpine
+    restart : always
     ports:
         - "5432:5432"
     environment:
-        - POSTGRES_DB = test
-        - POSTGRES_USER = lucas
-        - POSTGRES_PASSWORD = aaa
+        - POSTGRES_DB=itelis_test
+        - POSTGRES_USER=test
+        - POSTGRES_PASSWORD=test
+    volumes:
+    - ./db:/var/lib/postgresql/data
 
   php:
     container_name: php
@@ -32,8 +35,15 @@ services:
         - ./php-app/www.conf:/usr/local/etc/php-fpm.d/www.conf
         - ./php-app/php.ini:/etc/php7/php.ini
     links:
-        - postgres
+        - postgres:postgres
     tty: true
+   # environment:
+   #     - drupal_data_name=itelis_test
+   #     - drupal_data_user=root
+   #     - drupal_data_password=root
+   #     - drupal_data_host=postgres
+   #     - drupal_data_port=5432
+
 
 #  drupal:
 #    image: drupal:8.7
